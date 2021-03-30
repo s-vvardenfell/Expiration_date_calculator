@@ -19,21 +19,24 @@ Page
             Layout.fillWidth: true
             Layout.fillHeight: true
             font.pixelSize: font_size
-            color: "black"
+            color: control.checked ? bck_day: bck_night
 
             onActiveFocusChanged:
             {
-                rectPas.border.width = activeFocus ? 3 : 2
+                rectPas.border.width = activeFocus ? 2 : 1
             }
 
-            placeholderText: "Enter product date"
+            placeholderText: "Дата производства"
             validator: RegExpValidator { regExp: /[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}/}
+
             background: Rectangle
             {
                 id: rectPas
-                border.color: tf_product_date.text.length < 10 ? "red" : "#2b5278"
+                border.color: control.checked ? tf_product_date.text.length < 10 ? empty_field : border_night
+                                    : tf_product_date.text.length < 10 ? empty_field : border_day
+                color:control.checked ? bck_night : bck_day
                 radius: rad_size
-                border.width: 2
+                border.width: 1
             }
         }
 
@@ -50,21 +53,23 @@ Page
             Layout.fillHeight: true
             font.pixelSize: font_size
             // font.bold: true
-            color: "black"
+            color: control.checked ? bck_day: bck_night
 
             onActiveFocusChanged:
             {
-                rectPas2.border.width = activeFocus ? 3 : 2
+                rectPas2.border.width = activeFocus ? 2 : 1
             }
-            placeholderText: "Enter shelf date"
-            validator: RegExpValidator { regExp: /[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}/}
+            placeholderText: "Срок годности (дни)"
+            validator: RegExpValidator { regExp: /[0-9]{4}/}
 
             background: Rectangle
             {
                 id: rectPas2
-                border.color: tf_shelf_time.text.length < 10 ? "red" : "#2b5278"
+                border.color: control.checked ? tf_shelf_time.text.length < 1 ? empty_field : border_night
+                                    : tf_shelf_time.text.length < 1 ? empty_field : border_day
+                color:control.checked ? bck_night : bck_day
                 radius: rad_size
-                border.width: 2
+                border.width: 1
             }
 
         }
@@ -78,14 +83,16 @@ Page
         {
             id: regBtn
             font.pixelSize: font_size
-            text:"Calculate"
+            text:"Посчитать"
             Layout.fillWidth: true
             Layout.fillHeight: true
             activeFocusOnTab: true
 
+            enabled: (tf_product_date.text.length == 10 && tf_shelf_time.text.length > 0) ? true : false
+
             onActiveFocusChanged:
             {
-                rectReg.border.width = activeFocus ? 2 : 1
+                rectReg.border.width = activeFocus ? 3 : 2
             }
 
             contentItem: Text
@@ -93,7 +100,7 @@ Page
                 text: regBtn.text
                 font: regBtn.font
                 opacity: enabled ? 1.0 : 0.3
-                color: regBtn.down ? "#1ec4c1" : "#2b5278"
+                color: control.checked ? bck_day : bck_night
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight
@@ -103,7 +110,9 @@ Page
             {
                 id: rectReg
                 opacity: enabled ? 1 : 0.3
-                border.color: regBtn.down ? "#1ec4c1" : "#2b5278"
+                border.color: control.checked ? regBtn.down ? btn_pressed_night : border_night
+                                            : regBtn.down ? btn_pressed_day : border_day
+                color: control.checked ? bck_night : bck_day
                 border.width: 1
                 radius: rad_size
             }
@@ -127,7 +136,12 @@ Page
             Layout.fillWidth: true
             text: "Дата истечение срока годности:"
             font.pixelSize: font_size
-            color: "black"
+            color: control.checked ? bck_day : bck_night
+
+            background: Rectangle
+            {
+                color:control.checked ? bck_night : bck_day
+            }
         }
 
         Label
@@ -139,15 +153,17 @@ Page
             verticalAlignment: Text.AlignVCenter
             text: "xx.xx.xxxx"
             font.pixelSize: font_size
-            color: "black"
+            color: control.checked ? bck_day : bck_night
 
             background: Rectangle
             {
                 height: parent.height
                 width: parent.width
-                border.color: "black"
+                border.color: control.checked ? border_night : border_day
+                color:control.checked ? bck_night : bck_day
                 border.width: 1
                 radius: rad_size
+
             }
         }
 
@@ -162,7 +178,11 @@ Page
             Layout.fillWidth: true
             text: "Осталось дней:"
             font.pixelSize: font_size
-            color: "black"
+            color: control.checked ? bck_day : bck_night
+            background: Rectangle
+            {
+                color:control.checked ? bck_night : bck_day
+            }
         }
 
         Label
@@ -174,13 +194,14 @@ Page
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: font_size
-            color: "black"
+            color: control.checked ? bck_day : bck_night
 
             background: Rectangle
             {
                 height: parent.height
                 width: parent.width
-                border.color: "black"
+                border.color: control.checked ? border_night : border_day
+                color:control.checked ? bck_night : bck_day
                 border.width: 1
                 radius: rad_size
             }

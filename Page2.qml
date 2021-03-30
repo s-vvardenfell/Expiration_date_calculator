@@ -1,4 +1,4 @@
-import QtQuick 2.12
+﻿import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.15
 
@@ -18,21 +18,24 @@ Page
             Layout.fillWidth: true
             Layout.fillHeight: true
             font.pixelSize: font_size
-            color: "black"
+            color: control.checked ? bck_day: bck_night
 
             onActiveFocusChanged:
             {
-                rect1.border.width = activeFocus ? 3 : 2
+                rect1.border.width = activeFocus ? 2 : 1
             }
 
-            placeholderText: "Enter product date"
+            placeholderText: "Дата производства"
             validator: RegExpValidator { regExp: /[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}/}
+
             background: Rectangle
             {
                 id: rect1
-                border.color: tf_product_date.text.length < 10 ? "red" : "#2b5278"
+                border.color: control.checked ? tf_product_date.text.length < 10 ? empty_field : border_night
+                                    : tf_product_date.text.length < 10 ? empty_field : border_day
+                color:control.checked ? bck_night : bck_day
                 radius: rad_size
-                border.width: 2
+                border.width: 1
             }
         }
 
@@ -48,21 +51,23 @@ Page
             Layout.fillWidth: true
             Layout.fillHeight: true
             font.pixelSize: font_size
-            color: "black"
+            color: control.checked ? "white" : "black"
 
             onActiveFocusChanged:
             {
-                rect2.border.width = activeFocus ? 3 : 2
+                rect2.border.width = activeFocus ? 2 : 1
             }
 
-            placeholderText: "Enter expiration date"
+            placeholderText: "Годен до"
             validator: RegExpValidator { regExp: /[0-9]{2}[.]{1}[0-9]{2}[.]{1}[0-9]{4}/}
             background: Rectangle
             {
                 id: rect2
-                border.color: tf_product_date.text.length < 10 ? "red" : "#2b5278"
+                border.color: control.checked ? tf_expired_date.text.length < 10 ? empty_field : border_night
+                                    : tf_expired_date.text.length < 10 ? empty_field : border_day
+                color:control.checked ? bck_night : bck_day
                 radius: rad_size
-                border.width: 2
+                border.width: 1
             }
         }
 
@@ -74,15 +79,18 @@ Page
         Button
         {
             id: regBtn
-            text:"Calculate"
+            text:"Посчитать"
             font.pixelSize: font_size
             Layout.fillWidth: true
             Layout.fillHeight: true
             activeFocusOnTab: true
 
+            enabled: (tf_product_date.text.length == 10 && tf_expired_date.text.length == 10) ? true : false
+
+
             onActiveFocusChanged:
             {
-                rectReg.border.width = activeFocus ? 2 : 1
+                rectReg.border.width = activeFocus ? 3 : 2
             }
 
             contentItem: Text
@@ -90,7 +98,8 @@ Page
                 text: regBtn.text
                 font: regBtn.font
                 opacity: enabled ? 1.0 : 0.3
-                color: regBtn.down ? "#1ec4c1" : "#2b5278"
+//                color: regBtn.down ? "#1ec4c1" : "#00b300"
+                color: control.checked ? bck_day : bck_night
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight
@@ -102,7 +111,9 @@ Page
                 implicitWidth: 100
                 implicitHeight: 40
                 opacity: enabled ? 1 : 0.3
-                border.color: regBtn.down ? "#1ec4c1" : "#2b5278"
+                border.color: control.checked ? regBtn.down ? btn_pressed_night : border_night
+                                            : regBtn.down ? btn_pressed_day : border_day
+                color: control.checked ? bck_night : bck_day
                 border.width: 1
                 radius: rad_size
             }
@@ -124,7 +135,7 @@ Page
             Layout.fillWidth: true
             text: "Осталось дней:"
             font.pixelSize: font_size
-            color: "black"
+            color: control.checked ? bck_day : bck_night
         }
 
         Label
@@ -137,12 +148,13 @@ Page
             text: "x"
             font.pixelSize: font_size
             // font.bold: true
-            color: "black"
+            color: control.checked ? bck_day : bck_night
             background: Rectangle
             {
                 height: parent.height
                 width: parent.width
-                border.color: "black"
+                border.color: control.checked ? border_night : border_day
+                color:control.checked ? bck_night : bck_day
                 border.width: 1
                 radius: rad_size
             }
